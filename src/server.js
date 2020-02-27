@@ -11,6 +11,7 @@ import schema from './schema';
 import "./passport";
 import { authenticateJwt } from './passport';
 import {isAuthenticated} from "./middlewares";
+import { uploadMiddleware, uploadController } from "./upload";
 
 const PORT = process.env.PORT || 4000 ; // 이렇게 가져오는거네..dotenv를 가져온거다. 포트4000를
 // "|| 4000"은, 만약 process.env.PORT가 없다면 4000을 쓰라는 의미다.
@@ -22,5 +23,6 @@ const server= new GraphQLServer({
 
 server.express.use(logger('dev'));
 server.express.use(authenticateJwt);
+server.express.post("/api/upload", uploadMiddleware, uploadController);
 
 server.start({port: PORT}, () => console.log(`Server Running on port ${PORT}`));
